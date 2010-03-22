@@ -64,7 +64,8 @@ class OnbxDefaultWebApplication {
             ob_end_flush();
         } catch (Exception $e) {
             // todo: log format
-            syslog(LOG_ERR, sprintf("onbx: %s\nrequest: %s", $e, $onbxRequest));
+            syslog(LOG_ERR, sprintf("onbx: %s: %s\nrequest: %s",
+                    get_class($e), $e, $onbxRequest));
             ob_end_clean();
         }
 
