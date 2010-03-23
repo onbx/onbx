@@ -121,10 +121,10 @@ class OnbxRequest {
     }
 
     public function __toString() {
-        return sprintf("%s[url: %s][attributes: %s]",
-            get_class($this),
-            var_export($this->attributes, true),
-            $this->getUrl());
+        $result = get_class($this);
+        $result .= '[url: '.$this->getUrl().']';
+        $result .= '[attributes: '.$this->attributes.']';
+        return $result;
     }
 }
 ?>

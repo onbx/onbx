@@ -46,12 +46,26 @@ class OnbxMap {
         return $this->map[$name];
     }
 
+    public function remove($name) {
+        $this->get($name); // just check for existence
+        unset($this->map[$name]);
+    }
+
     public function isEmpty() {
         return count($this->map) == 0;
     }
 
     public function toNativeArray() {
         return $this->map;
+    }
+
+    public function __toString() {
+        $result = get_class($this).'[';
+        foreach ($this->map as $key => $value) {
+            $result .= "[$key => $value]";
+        }
+        $result .= ']';
+        return $result;
     }
 }
 ?>

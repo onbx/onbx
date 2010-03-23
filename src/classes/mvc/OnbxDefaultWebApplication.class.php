@@ -23,6 +23,9 @@ onbxImport('OnbxDispatcher');
 onbxImport('OnbxSanitizer');
 onbxImport('OnbxDirectoryContext');
 
+onbxImport('OnbxLogger');
+onbxImport('OnbxMDC');
+
 class OnbxDefaultWebApplication {
     private $rootDirectory;
     private $dispatcher;
@@ -59,14 +62,21 @@ class OnbxDefaultWebApplication {
                 setPostVars(OnbxMap::create($_POST))->
                 setServerVars(OnbxMap::create($_SERVER));
 
+            OnbxMDC::put('request', $onbxRequest);
+
             $this->dispatcher->dispatchRequest($onbxRequest);
 
             ob_end_flush();
         } catch (Exception $e) {
-            // todo: log format
-            syslog(LOG_ERR, sprintf("onbx: %s: %s\nrequest: %s",
-                    get_class($e), $e, $onbxRequest));
+
+            OnbxLogger::getLogger($this)->
+                error('error dispatching onbx request', $e);
+
             ob_end_clean();
+        }
+
+        if (OnbxMDC::getContext()->containsKey('request')) {
+            OnbxMDC::remove('request');
         }
 
         OnbxDirectoryContext::popDir();
