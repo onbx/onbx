@@ -17,6 +17,7 @@
  */
 
 onbxImport('OnbxMDC');
+onbxImport('OnbxMap');
 
 /** 
  * @since 2010-03-23
